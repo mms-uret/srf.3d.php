@@ -21,4 +21,19 @@ class LandingpageController extends AbstractController
 
         return $this->json($data, 200, ['Access-Control-Allow-Origin' => '*']);
     }
+
+    /**
+     * @Route("/article/{article}", name="article")
+     */
+    public function article($article)
+    {
+        $client = HttpClient::create();
+        $parts = explode(':', $article);
+
+        $response = $client->request('GET', 'https://www.srf.ch/article/' . array_pop($parts) . '/search');
+
+        $data = json_decode($response->getContent(), true);
+
+        return $this->json($data, 200, ['Access-Control-Allow-Origin' => '*']);
+    }
 }
